@@ -67,12 +67,12 @@ def main():
         res = receive_int(connection,INT_SIZE)
         print("O resultado da subtração é:",res)
     # 1 Fechar a conexão apenas do lado do cliente ou...
-    send_str(connection,BYE_OP)
+    #send_str(connection,BYE_OP)
     print("Connection is going to close...")
     #connection.close()
     # 2 Fechar a conexão do lado do cliente e do servidor
-    #send_str(connection,END_OP)
-    #connection.close()
+    send_str(connection,END_OP)
+    connection.close()
     
 
 if __name__=="__main__":

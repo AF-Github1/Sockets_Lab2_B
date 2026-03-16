@@ -6,6 +6,12 @@ class Subtrair:
 
 
     def executar(self,x:float, y:float)->float:
+        """
+        Subtrai 2 números
+        :param x: valor a que se subtrai
+        :param y: valor a subtrair
+        :return: devolve o resultado da subtração
+        """
         self.x = x
         self.y = y
         self.res = x - self.y

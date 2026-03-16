@@ -1,32 +1,120 @@
 from CALCULADORA_4.servidor.Operacoes import dividir, somar, subtrair ,multiplicar,raizQuadrada
+import socket
+import json
+COMMAND_SIZE = 9
+INT_SIZE = 8
+ADD_OP = "add      "
+OBJ_OP = "add_obj  "
+SYM_OP = "sym      "
+SUB_OP = "sub      "
+MLT_OP = "mult     "
+DIV_OP = "div      "
+SQR_OP = "sqr      "
+BYE_OP = "bye      "
+END_OP = "stop     "
+PORT = 35000
+SERVER_ADDRESS = "localhost"
+# ---------------------- interaction with sockets ------------------------------
+def receive_int(connection, n_bytes: int) -> int:
+    """
+    :param n_bytes: The number of bytes to read from the current connection
+    :return: The next integer read from the current connection
+    """
+    data = connection.recv(n_bytes)
+    return int.from_bytes(data, byteorder='big', signed=True)
 
-class Maquina:
-    def __init__(self, operation_signal:str, first_value:float, second_value:float):
-        self.operation_signal = operation_signal
-        self.first_value = first_value
-        self.second_value = second_value
-     
-    def execute(self,operation_signal:str,first_value:float,second_value:float):
-        res = operation_signal
+def send_int(connection, value: int, n_bytes: int) -> None:
+    """
+    :param value: The integer value to be sent to the current connection
+    :param n_bytes: The number of bytes to send
+    """
+    connection.send(value.to_bytes(n_bytes, byteorder="big", signed=True))
 
-        if res =="+":
-            s:object = somar.Somar(first_value,second_value)
-            res = s.executar(first_value,second_value)
-            return res
-        elif res =="-":
-            s:object = subtrair.Subtrair(first_value,second_value)
-            res = s.executar(first_value,second_value)
-            return res 
-        elif res =="/":
-            s:object = dividir.Dividir(first_value,second_value)
-            res = s.executar()
-        elif res == "x":
-            s:object = multiplicar.Multiplicar(first_value,second_value)
-            res = s.executar()      
-        else:
-            s:object = raizQuadrada.RaizQuadrada(first_value)
-            res = s.executar(first_value)     
-        if type(res)==str:
-            print (res)
-        else:
-            return res
+def receive_str(connection, n_bytes: int) -> str:
+    """
+    :param n_bytes: The number of bytes to read from the current connection
+    :return: The next string read from the current connection
+    """
+    data = connection.recv(n_bytes)
+    return data.decode()
+
+def send_str(connection, value: str) -> None:
+    """
+    :param value: The string value to send to the current connection
+    """
+    connection.send(value.encode())
+
+#TODO
+# Implement a method that sends and object and returns an object.
+def send_object(connection, obj):
+    """1º: envia tamanho, 2º: envia dados.""" 
+    data = json.dumps(obj).encode('utf-8')
+    size = len(data)
+    send_int(connection, size, INT_SIZE) # Envio do tamanho
+    connection.send(data)# Envio do objeto
+def receive_object(connection):
+    """1º: lê tamanho, 2º: lê dados.""" 
+    size = receive_int(connection, INT_SIZE) #   Recebe o tamanho
+    data = connection.recv(size)  # Recebe o objeto
+    return json.loads(data.decode('utf-8'))
+
+
+class Maquina: # #Maquina como servidor
+    def __init__(self):
+        pass
+
+    def execute(self, connection, op_sinal, dicionario_op):
+        """
+        """
+        send_str(connection, op_sinal)
+        send_object(connection, dicionario_op)
+        return receive_int(connection, INT_SIZE)
+
+    def main_maquina(self):
+        """
+        """
+        s = socket.socket()
+        s.bind(('', PORT))
+        s.listen(1)
+        
+        keep_running = True
+        while keep_running:
+            connection, address = s.accept()
+            last_request = False
+            while not last_request:
+                request_type = receive_str(connection, COMMAND_SIZE)
+                
+                if request_type == OBJ_OP:
+                    dados = receive_object(connection)
+                    sinal = dados.get("sinal")
+                    v1 = dados.get("op1")
+                    v2 = dados.get("op2")
+
+                    if sinal == "+":
+                        op_obj = somar.Somar(v1, v2)
+                    elif sinal == "-":
+                        op_obj = subtrair.Subtrair(v1, v2)
+                    elif sinal == "x":
+                        op_obj = multiplicar.Multiplicar(v1, v2)
+                    elif sinal == "/":
+                        op_obj = dividir.Dividir(v1, v2)
+                    elif sinal == "sqrt":
+                        op_obj = raizQuadrada.RaizQuadrada(v1)
+                    else:
+                        op_obj = None
+                    if op_obj:
+                        res = op_obj.executar(v1, v2)
+                    else:
+                        res = 0
+                    
+                    send_int(connection, res, INT_SIZE)
+                
+                elif request_type == END_OP:
+                    last_request = True
+                    keep_running = False
+            connection.close()
+        s.close()
+
+if __name__ == "__main__":
+    _server = Maquina()
+    _server.main_maquina()

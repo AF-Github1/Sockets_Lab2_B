@@ -1,4 +1,4 @@
-import interface
+from . import interface
 def main():
 	_interface = interface.Interface()
 	_interface.execute()

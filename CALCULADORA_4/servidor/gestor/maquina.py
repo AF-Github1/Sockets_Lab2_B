@@ -1,4 +1,4 @@
-from servidor.Operacoes import dividir, somar, subtrair ,multiplicar,raizQuadrada
+from CALCULADORA_4.servidor.Operacoes import dividir, somar, subtrair ,multiplicar,raizQuadrada
 
 class Maquina:
     def __init__(self, operation_signal:str, first_value:float, second_value:float):

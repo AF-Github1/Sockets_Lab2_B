@@ -1,4 +1,4 @@
-from servidor.gestor import maquina
+from CALCULADORA_4.servidor.gestor import maquina
 
 class Interface:
 	def __init__(self):

@@ -74,7 +74,7 @@ def execute(connection):
 
 def execute_list(connection):
     """
-    Recebe objecto lista, realizada operação de soma
+    Recebe objecto lista, realiza operação de soma
     """
     dados = receive_object(connection)
     operacao = dados[0]
@@ -94,7 +94,7 @@ def execute_list(connection):
 
 def main():
     """
-    Runs the server server until the client sends a "terminate" action
+    Runs the server until the client sends a "terminate" action
     """
     s = socket.socket()
     s.bind(('', PORT))

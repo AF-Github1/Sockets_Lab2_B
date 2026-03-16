@@ -50,7 +50,7 @@ def send_object(connection, obj):
     connection.send(data)# Envio do objeto
 def receive_object(connection):
     """1º: lê tamanho, 2º: lê dados.""" 
-    size = receive_int(connection, INT_SIZE) # Recebe o tamanho
+    size = receive_int(connection, INT_SIZE) #   Recebe o tamanho
     data = connection.recv(size)  # Recebe o objeto
     return json.loads(data.decode('utf-8'))
 
@@ -71,6 +71,25 @@ def execute(connection):
         print("Operação não foi de adição")
 
     send_int(connection, resultado, INT_SIZE)
+
+def execute_list(connection):
+    """
+    Recebe objecto lista, realizada operação de soma
+    """
+    dados = receive_object(connection)
+    operacao = dados[0]
+    v1 = dados[1]
+    v2 = dados[2]
+
+    if operacao == "+":
+        resultado = v1 + v2
+        print("Operação por lista pedida com " + str(v1) + " e " + str(v2))
+    else:
+        resultado = 0
+        print("Operação não foi de adição")
+
+    send_int(connection, resultado, INT_SIZE)
+
 
 
 def main():
@@ -104,7 +123,8 @@ def main():
                 result = a-b
                 send_int(connection,result, INT_SIZE)
             elif request_type == OBJ_OP: # Operação de soma com dicionário
-                execute(connection)     
+                execute(connection)
+                execute_list(connection)
             elif request_type == BYE_OP:
                 print("Last request...")
                 last_request = True

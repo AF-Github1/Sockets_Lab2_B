@@ -59,6 +59,14 @@ def execute(connection, op_sinal, dicionario_operandos):
     
     return receive_int(connection, INT_SIZE)
 
+def execute_list(connection, op_sinal, lista_operandos):
+    """
+    Envio de lista para realizar operação de adição
+    """
+    send_str(connection, op_sinal)
+    send_object(connection, lista_operandos)
+
+    return receive_int(connection, INT_SIZE)
 
 
 def main():
@@ -79,11 +87,13 @@ def main():
     # It receives an integer a result of the operation
     # ...
     # Operação de soma
-    dicionario_soma = {"sinal" : "+","op1" : a, "op2" : b}
+    dicionario_soma = {"sinal" : "+", "op1" : a, "op2" : b}
     res = execute(connection,OBJ_OP,dicionario_soma)
     print("O resultado da soma (dicionário) é: ", res)
 
-
+    lista_soma = ["+", "op1", "op2"]
+    res = execute_list(connection, OBJ_OP, lista_soma)
+    print("O resultado da soma (lista) é: ", res)
 
     # Testar duas operações de subtração
     for i in range(2):

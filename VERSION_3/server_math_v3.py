@@ -122,7 +122,7 @@ def main():
                 print("Pediram para subtrair:",a,"-",b)
                 result = a-b
                 send_int(connection,result, INT_SIZE)
-            elif request_type == OBJ_OP: # Operação de soma com dicionário
+            elif request_type == OBJ_OP: # Operação de soma com dicionário/lista
                 #execute(connection)
                 execute_list(connection)
             elif request_type == BYE_OP:

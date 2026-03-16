@@ -38,7 +38,7 @@ def send_str(connection, value: str) -> None:
     """
     :param value: The string value to send to the current connection
     """
-    connection.connection.send(value.encode())
+    connection.send(value.encode())
 
 #TODO
 # Implement a method that sends and object and returns an object.
@@ -123,7 +123,7 @@ def main():
                 result = a-b
                 send_int(connection,result, INT_SIZE)
             elif request_type == OBJ_OP: # Operação de soma com dicionário
-                execute(connection)
+                #execute(connection)
                 execute_list(connection)
             elif request_type == BYE_OP:
                 print("Last request...")

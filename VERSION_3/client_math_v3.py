@@ -87,11 +87,11 @@ def main():
     # It receives an integer a result of the operation
     # ...
     # Operação de soma
-    dicionario_soma = {"sinal" : "+", "op1" : a, "op2" : b}
-    res = execute(connection,OBJ_OP,dicionario_soma)
-    print("O resultado da soma (dicionário) é: ", res)
+    #dicionario_soma = {"sinal" : "+", "op1" : a, "op2" : b}
+    #res = execute(connection,OBJ_OP,dicionario_soma)
+    #print("O resultado da soma (dicionário) é: ", res)
 
-    lista_soma = ["+", "op1", "op2"]
+    lista_soma = ["+", a, b]
     res = execute_list(connection, OBJ_OP, lista_soma)
     print("O resultado da soma (lista) é: ", res)
 

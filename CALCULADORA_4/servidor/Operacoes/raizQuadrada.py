@@ -5,7 +5,7 @@ class RaizQuadrada:
     def __init__(self, x:float):
         self.x = x
 
-    def executar(self,x:float)->Union[float,str]:
+    def executar(self)->Union[float,str]:
         """
         Realiza a raiz quadrada de um número
         :param x: valor para o qual é calculada a raiz quadrada

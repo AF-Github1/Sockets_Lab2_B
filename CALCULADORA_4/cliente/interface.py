@@ -14,7 +14,7 @@ DIV_OP = "div      "
 SQR_OP = "sqr      "
 BYE_OP = "bye      "
 END_OP = "stop     "
-PORT = 35000
+PORT = 36000
 SERVER_ADDRESS = "localhost"
 
 # ----- enviar e receber strings ----- #
@@ -65,7 +65,7 @@ class Interface: ## Interface como cliente
 		b:float = float(input("y="))
             
 		dicionario_op = {"sinal" : sinal_op, "op1" : a, "op2" : b}
-		valor_calculado = self._maquina.execute(connection, OBJ_OP, dicionario_op)
+		valor_calculado = self._maquina.server_call(connection, OBJ_OP, dicionario_op)
 		
 		print("O resultado da operação de (dicionário) é: ", valor_calculado)
             

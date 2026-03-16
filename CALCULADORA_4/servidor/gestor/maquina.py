@@ -12,7 +12,7 @@ DIV_OP = "div      "
 SQR_OP = "sqr      "
 BYE_OP = "bye      "
 END_OP = "stop     "
-PORT = 35000
+PORT = 36000
 SERVER_ADDRESS = "localhost"
 # ---------------------- interaction with sockets ------------------------------
 def receive_int(connection, n_bytes: int) -> int:
@@ -28,7 +28,7 @@ def send_int(connection, value: int, n_bytes: int) -> None:
     :param value: The integer value to be sent to the current connection
     :param n_bytes: The number of bytes to send
     """
-    connection.send(value.to_bytes(n_bytes, byteorder="big", signed=True))
+    connection.send(int(value).to_bytes(n_bytes, byteorder="big", signed=True))
 
 def receive_str(connection, n_bytes: int) -> str:
     """
@@ -63,14 +63,14 @@ class Maquina: # #Maquina como servidor
     def __init__(self):
         pass
 
-    def execute(self, connection, op_sinal, dicionario_op):
+    def server_call(self, connection, op_sinal, dicionario_op):
         """
         """
         send_str(connection, op_sinal)
         send_object(connection, dicionario_op)
         return receive_int(connection, INT_SIZE)
 
-    def main_maquina(self):
+    def execute(self):
         """
         """
         s = socket.socket()
@@ -103,7 +103,7 @@ class Maquina: # #Maquina como servidor
                     else:
                         op_obj = None
                     if op_obj:
-                        res = op_obj.executar(v1, v2)
+                        res = op_obj.executar()
                     else:
                         res = 0
                     
@@ -117,4 +117,4 @@ class Maquina: # #Maquina como servidor
 
 if __name__ == "__main__":
     _server = Maquina()
-    _server.main_maquina()
+    _server.execute()

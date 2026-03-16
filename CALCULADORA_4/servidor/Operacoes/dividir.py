@@ -8,6 +8,12 @@ class Dividir:
 
 
     def executar(self)->Union[float,str]:
+        """
+        Divide dois números
+        :param x: valor dividido
+        :param y: valor a dividir
+        :return: retorna o resultado da divisão ou mensagem de erro caso tenha ocorrido divisão por 0
+        """
         try:
             self.res = self.x / self.y
         except ZeroDivisionError:

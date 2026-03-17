@@ -13,7 +13,7 @@ SQR_OP = "sqr      "
 BYE_OP = "bye      "
 END_OP = "stop     "
 PORT = 36000
-SERVER_ADDRESS = "localhost"
+SERVER_ADDRESS = "192.168.233.1"
 # ---------------------- interaction with sockets ------------------------------
 def receive_int(connection, n_bytes: int) -> int:
     """

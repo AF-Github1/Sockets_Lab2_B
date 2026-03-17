@@ -15,7 +15,7 @@ SQR_OP = "sqr      "
 BYE_OP = "bye      "
 END_OP = "stop     "
 PORT = 36000
-SERVER_ADDRESS = "localhost"
+SERVER_ADDRESS = "192.168.233.1"
 
 # ----- enviar e receber strings ----- #
 def receive_str(connect, n_bytes: int) -> str:

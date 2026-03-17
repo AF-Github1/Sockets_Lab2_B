@@ -13,7 +13,7 @@ SQR_OP = "sqr      "
 BYE_OP = "bye      "
 END_OP = "stop     "
 PORT = 36000
-SERVER_ADDRESS = "192.168.233.1"
+SERVER_ADDRESS = "localhost"
 # ---------------------- interaction with sockets ------------------------------
 def receive_int(connection, n_bytes: int) -> int:
     """
@@ -65,6 +65,7 @@ class Maquina: # #Maquina como servidor
 
     def server_call(self, connection, op_sinal, dicionario_op):
         """
+        Função que lida com o envio de dicionários por sockets
         """
         send_str(connection, op_sinal)
         send_object(connection, dicionario_op)
@@ -72,6 +73,8 @@ class Maquina: # #Maquina como servidor
 
     def execute(self):
         """
+        Esta função aceita o dicionário vindo de um cliente e realiza uma operação dependendo do sinal que estiver na primeira chave, usando para esse efeito os operandos
+        da segunda e terceira chave. Caso a operação seja invalida, devolve 0,
         """
         s = socket.socket()
         s.bind(('', PORT))

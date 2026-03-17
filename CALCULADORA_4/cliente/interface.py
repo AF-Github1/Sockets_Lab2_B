@@ -15,7 +15,7 @@ SQR_OP = "sqr      "
 BYE_OP = "bye      "
 END_OP = "stop     "
 PORT = 36000
-SERVER_ADDRESS = "192.168.233.1"
+SERVER_ADDRESS = "localhost"
 
 # ----- enviar e receber strings ----- #
 def receive_str(connect, n_bytes: int) -> str:
@@ -52,24 +52,28 @@ def receive_object(connection):
     return json.loads(data.decode('utf-8'))
 
 
-class Interface: ## Interface como cliente
-	def __init__(self):
-		self._maquina = maquina.Maquina()
-	def execute(self):
-		connection = socket.socket()
-		connection.connect((SERVER_ADDRESS,PORT))
-		print("Qual é o cálculo que quer efetuar? + - x / sqrt")
-		sinal_op = str(input())
-		print("Preciso que introduza dois valores:")
-		a:float = float(input("x="))
-		b:float = float(input("y="))
-            
-		dicionario_op = {"sinal" : sinal_op, "op1" : a, "op2" : b}
-		valor_calculado = self._maquina.server_call(connection, OBJ_OP, dicionario_op)
-		
-		print("O resultado da operação de (dicionário) é: ", valor_calculado)
-            
-		send_str(connection, END_OP) # Terminar ligação
-		connection.close()
+class Interface: # Interface como cliente
+    def __init__(self):
+        self._maquina = maquina.Maquina()
+    def execute(self):
+        """
+        Esta função pede os inputs do utilizador de forma a serem enviados em forma de dicionário por socket ao servidor, que devolverá o resultado da operação pedida
+        Depois de cada pedido de cálculo, a ligação será terminada
+        """
+        connection = socket.socket()
+        connection.connect((SERVER_ADDRESS,PORT))
+        print("Qual é o cálculo que quer efetuar? + - x / sqrt")
+        sinal_op = str(input())
+        print("Preciso que introduza dois valores:")
+        a:float = float(input("x="))
+        b:float = float(input("y="))
+        
+        dicionario_op = {"sinal" : sinal_op, "op1" : a, "op2" : b}
+        valor_calculado = self._maquina.server_call(connection, OBJ_OP, dicionario_op)
+        
+        print("O resultado da operação de (dicionário) é: ", valor_calculado)
+        
+        send_str(connection, END_OP) # Terminar ligação
+        connection.close()
 
 		
